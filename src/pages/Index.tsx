@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { SearchResults } from "@/components/SearchResults";
 import { FeaturesSection } from "@/components/FeaturesSection";
 import { Header } from "@/components/Header";
+import { useTheme } from "@/hooks/useTheme";
 
 const Index = () => {
   const [fromCity, setFromCity] = useState("");
@@ -21,9 +22,11 @@ const Index = () => {
   const [passengers, setPassengers] = useState("1");
   const [showResults, setShowResults] = useState(false);
 
+  // Cameroon cities
   const cities = [
-    "New York", "Los Angeles", "Chicago", "Houston", "Phoenix", 
-    "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Jose"
+    "Yaoundé", "Douala", "Bamenda", "Bafoussam", "Garoua", 
+    "Maroua", "Ngaoundéré", "Bertoua", "Ebolowa", "Kumba",
+    "Limbe", "Buea", "Kribi", "Edéa", "Sangmélima"
   ];
 
   const handleSearch = () => {
@@ -39,37 +42,37 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-indigo-50 dark:from-purple-900/20 dark:via-gray-900 dark:to-indigo-900/20 transition-colors duration-300">
       <Header />
 
       {/* Hero Section */}
       <section className="relative py-20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
               Book Your
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600"> Journey</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-purple-400 dark:to-indigo-400"> Journey</span>
             </h1>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Travel comfortably and safely to your destination with our premium bus services
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+              Travel comfortably across Cameroon with our trusted bus partners. Book tickets from any bus company, all in one place.
             </p>
           </div>
 
           {/* Search Form */}
-          <Card className="max-w-4xl mx-auto shadow-2xl border-0 bg-white/90 backdrop-blur-sm">
+          <Card className="max-w-4xl mx-auto shadow-2xl border-0 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm">
             <CardHeader>
-              <CardTitle className="text-center text-2xl text-gray-800">Find Your Perfect Trip</CardTitle>
+              <CardTitle className="text-center text-2xl text-gray-800 dark:text-white">Find Your Perfect Trip</CardTitle>
             </CardHeader>
             <CardContent className="p-8">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 items-end">
                 {/* From City */}
                 <div className="space-y-2">
-                  <Label htmlFor="from" className="text-sm font-medium text-gray-700 flex items-center">
+                  <Label htmlFor="from" className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center">
                     <MapPin className="w-4 h-4 mr-1" />
                     From
                   </Label>
                   <Select value={fromCity} onValueChange={setFromCity}>
-                    <SelectTrigger className="h-12">
+                    <SelectTrigger className="h-12 dark:bg-gray-700 dark:border-gray-600">
                       <SelectValue placeholder="Select departure city" />
                     </SelectTrigger>
                     <SelectContent>
@@ -86,7 +89,7 @@ const Index = () => {
                     variant="outline"
                     size="icon"
                     onClick={swapCities}
-                    className="h-12 w-12 rounded-full border-2 border-blue-200 hover:border-blue-400 hover:bg-blue-50"
+                    className="h-12 w-12 rounded-full border-2 border-purple-200 hover:border-purple-400 hover:bg-purple-50 dark:border-purple-600 dark:hover:border-purple-400 dark:hover:bg-purple-900/50"
                   >
                     <ArrowRightLeft className="h-4 w-4" />
                   </Button>
@@ -94,12 +97,12 @@ const Index = () => {
 
                 {/* To City */}
                 <div className="space-y-2">
-                  <Label htmlFor="to" className="text-sm font-medium text-gray-700 flex items-center">
+                  <Label htmlFor="to" className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center">
                     <MapPin className="w-4 h-4 mr-1" />
                     To
                   </Label>
                   <Select value={toCity} onValueChange={setToCity}>
-                    <SelectTrigger className="h-12">
+                    <SelectTrigger className="h-12 dark:bg-gray-700 dark:border-gray-600">
                       <SelectValue placeholder="Select destination city" />
                     </SelectTrigger>
                     <SelectContent>
@@ -112,7 +115,7 @@ const Index = () => {
 
                 {/* Date Picker */}
                 <div className="space-y-2">
-                  <Label className="text-sm font-medium text-gray-700 flex items-center">
+                  <Label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center">
                     <CalendarIcon className="w-4 h-4 mr-1" />
                     Departure Date
                   </Label>
@@ -121,7 +124,7 @@ const Index = () => {
                       <Button
                         variant="outline"
                         className={cn(
-                          "h-12 w-full justify-start text-left font-normal",
+                          "h-12 w-full justify-start text-left font-normal dark:bg-gray-700 dark:border-gray-600",
                           !departureDate && "text-muted-foreground"
                         )}
                       >
@@ -143,9 +146,9 @@ const Index = () => {
 
                 {/* Passengers */}
                 <div className="space-y-2">
-                  <Label className="text-sm font-medium text-gray-700">Passengers</Label>
+                  <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">Passengers</Label>
                   <Select value={passengers} onValueChange={setPassengers}>
-                    <SelectTrigger className="h-12">
+                    <SelectTrigger className="h-12 dark:bg-gray-700 dark:border-gray-600">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -161,7 +164,7 @@ const Index = () => {
 
               <Button 
                 onClick={handleSearch}
-                className="w-full mt-8 h-14 text-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+                className="w-full mt-8 h-14 text-lg bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 dark:from-purple-500 dark:to-indigo-500 dark:hover:from-purple-600 dark:hover:to-indigo-600"
                 disabled={!fromCity || !toCity || !departureDate}
               >
                 Search Buses
