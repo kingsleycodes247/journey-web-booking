@@ -1,34 +1,33 @@
-
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Clock, MapPin, CreditCard, Star, Navigation } from "lucide-react";
-import { format } from "date-fns";
+import { Bus, Clock, MapPin, Users, Wifi, AirVent, Shield } from "lucide-react";
 
 interface SearchResultsProps {
   fromCity: string;
   toCity: string;
   departureDate: Date | undefined;
+  returnDate?: Date | undefined;
   passengers: string;
+  ticketType: string;
 }
 
-export const SearchResults = ({ fromCity, toCity, departureDate, passengers }: SearchResultsProps) => {
-  // Mock bus data with Cameroon bus companies
+export const SearchResults = ({ fromCity, toCity, departureDate, returnDate, passengers, ticketType }: SearchResultsProps) => {
+  // Mock bus data - you can replace this with real API data later
   const busResults = [
     {
       id: 1,
-      operator: "Garantie Express",
-      companyLogo: "GE",
+      company: "Guaranti Express",
+      logo: "🚌",
       departureTime: "06:00",
-      arrivalTime: "14:30",
-      duration: "8h 30m",
-      price: 15000,
-      currency: "XAF",
+      arrivalTime: "14:00",
+      duration: "8h 00m",
+      price: 8500,
+      rating: 4.5,
+      amenities: ["WiFi", "AC", "Insurance"],
       busType: "VIP",
       seatsAvailable: 12,
-      rating: 4.5,
-      amenities: ["WiFi", "AC", "Entertainment", "Snacks"],
-      trackingAvailable: true
+      image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
     },
     {
       id: 2,
@@ -62,92 +61,139 @@ export const SearchResults = ({ fromCity, toCity, departureDate, passengers }: S
     }
   ];
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('fr-FR').format(price);
+  const formatDate = (date: Date | undefined) => {
+    if (!date) return "";
+    return date.toLocaleDateString("en-US", { 
+      weekday: "short", 
+      year: "numeric", 
+      month: "short", 
+      day: "numeric" 
+    });
   };
 
   return (
-    <section className="py-12 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
+    <section className="py-8 md:py-12 bg-gray-50 dark:bg-gray-900/50">
       <div className="container mx-auto px-4">
-        <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Available Buses</h2>
-          <p className="text-gray-600 dark:text-gray-300">
-            {fromCity} → {toCity} • {departureDate && format(departureDate, "PPP")} • {passengers} {passengers === "1" ? "Passenger" : "Passengers"}
-          </p>
+        {/* Search Summary */}
+        <Card className="mb-6 md:mb-8 bg-white dark:bg-gray-800 border-0 shadow-lg">
+          <CardContent className="p-4 md:p-6">
+            <div className="flex flex-col md:flex-row md:items-center justify-between space-y-4 md:space-y-0">
+              <div className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-6">
+                <div className="flex items-center space-x-2">
+                  <MapPin className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                  <span className="font-medium text-gray-900 dark:text-white">{fromCity} → {toCity}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Clock className="h-4 w-4 text-gray-500" />
+                  <span className="text-gray-600 dark:text-gray-300">{formatDate(departureDate)}</span>
+                  {ticketType === "round-trip" && returnDate && (
+                    <>
+                      <span className="text-gray-500">•</span>
+                      <span className="text-gray-600 dark:text-gray-300">Return: {formatDate(returnDate)}</span>
+                    </>
+                  )}
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Users className="h-4 w-4 text-gray-500" />
+                  <span className="text-gray-600 dark:text-gray-300">{passengers} passenger{passengers !== "1" ? "s" : ""}</span>
+                </div>
+              </div>
+              <Badge variant="secondary" className="w-fit">
+                {ticketType === "round-trip" ? "Round Trip" : "One Way"}
+              </Badge>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Results Header */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-6">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4 md:mb-0">
+            Available Buses ({busResults.length})
+          </h2>
+          <div className="text-sm text-gray-600 dark:text-gray-400">
+            Showing results for {formatDate(departureDate)}
+          </div>
         </div>
 
-        <div className="space-y-4">
+        {/* Bus Results */}
+        <div className="space-y-4 md:space-y-6">
           {busResults.map((bus) => (
-            <Card key={bus.id} className="overflow-hidden hover:shadow-lg transition-all duration-300 bg-white dark:bg-gray-700 hover:scale-[1.02]">
-              <CardContent className="p-6">
-                <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-center">
-                  {/* Bus Info */}
-                  <div className="lg:col-span-2">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex items-center space-x-4">
-                        <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/50 rounded-lg flex items-center justify-center">
-                          <span className="text-purple-600 dark:text-purple-400 font-bold text-sm">{bus.companyLogo}</span>
-                        </div>
-                        <div>
-                          <h3 className="text-xl font-semibold text-gray-900 dark:text-white">{bus.operator}</h3>
-                          <p className="text-gray-600 dark:text-gray-300">{bus.busType}</p>
-                          <div className="flex items-center mt-2 space-x-4">
-                            <div className="flex items-center bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-400 px-2 py-1 rounded text-sm">
-                              <Star className="w-3 h-3 mr-1" />
-                              {bus.rating}
+            <Card key={bus.id} className="overflow-hidden bg-white dark:bg-gray-800 border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
+              <CardContent className="p-0">
+                <div className="flex flex-col lg:flex-row">
+                  {/* Bus Image */}
+                  <div className="lg:w-48 h-48 lg:h-auto">
+                    <img 
+                      src={bus.image} 
+                      alt={`${bus.company} bus`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  
+                  {/* Bus Details */}
+                  <div className="flex-1 p-4 md:p-6">
+                    <div className="flex flex-col lg:flex-row lg:items-center justify-between space-y-4 lg:space-y-0">
+                      {/* Left Section */}
+                      <div className="space-y-3 lg:space-y-4">
+                        <div className="flex items-center space-x-3">
+                          <span className="text-2xl">{bus.logo}</span>
+                          <div>
+                            <h3 className="text-lg md:text-xl font-bold text-gray-900 dark:text-white">{bus.company}</h3>
+                            <div className="flex items-center space-x-2">
+                              <Badge variant="outline" className="text-xs">{bus.busType}</Badge>
+                              <span className="text-sm text-gray-500">⭐ {bus.rating}</span>
                             </div>
-                            <span className="text-sm text-gray-500 dark:text-gray-400">
-                              {bus.seatsAvailable} seats available
-                            </span>
-                            {bus.trackingAvailable && (
-                              <Badge variant="secondary" className="text-xs bg-purple-100 dark:bg-purple-900/50 text-purple-800 dark:text-purple-400">
-                                <Navigation className="w-3 h-3 mr-1" />
-                                Live Tracking
-                              </Badge>
-                            )}
                           </div>
                         </div>
+                        
+                        <div className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-6">
+                          <div className="flex items-center space-x-4">
+                            <div className="text-center">
+                              <div className="text-xl font-bold text-gray-900 dark:text-white">{bus.departureTime}</div>
+                              <div className="text-sm text-gray-500">{fromCity}</div>
+                            </div>
+                            <div className="flex-1 text-center">
+                              <div className="text-sm text-gray-500">{bus.duration}</div>
+                              <div className="w-16 h-px bg-gray-300 dark:bg-gray-600 mx-auto"></div>
+                            </div>
+                            <div className="text-center">
+                              <div className="text-xl font-bold text-gray-900 dark:text-white">{bus.arrivalTime}</div>
+                              <div className="text-sm text-gray-500">{toCity}</div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="flex flex-wrap gap-2">
+                          {bus.amenities.map((amenity, index) => (
+                            <Badge key={index} variant="secondary" className="text-xs">
+                              {amenity === "WiFi" && <Wifi className="w-3 h-3 mr-1" />}
+                              {amenity === "AC" && <AirVent className="w-3 h-3 mr-1" />}
+                              {amenity === "Insurance" && <Shield className="w-3 h-3 mr-1" />}
+                              {amenity}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                      
+                      {/* Right Section */}
+                      <div className="text-center lg:text-right space-y-3">
+                        <div>
+                          <div className="text-2xl md:text-3xl font-bold text-purple-600 dark:text-purple-400">
+                            ₦{bus.price.toLocaleString()}
+                            {ticketType === "round-trip" && (
+                              <span className="text-sm text-gray-500 block">× 2 = ₦{(bus.price * 2).toLocaleString()}</span>
+                            )}
+                          </div>
+                          <div className="text-sm text-gray-500">per person</div>
+                        </div>
+                        <div className="text-sm text-green-600 dark:text-green-400">
+                          {bus.seatsAvailable} seats left
+                        </div>
+                        <Button className="w-full lg:w-auto bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 dark:from-purple-500 dark:to-indigo-500 dark:hover:from-purple-600 dark:hover:to-indigo-600">
+                          Select Seats
+                        </Button>
                       </div>
                     </div>
-
-                    {/* Amenities */}
-                    <div className="flex flex-wrap gap-2">
-                      {bus.amenities.map((amenity) => (
-                        <Badge key={amenity} variant="secondary" className="text-xs bg-gray-100 dark:bg-gray-600">
-                          {amenity}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Timing */}
-                  <div className="text-center">
-                    <div className="flex items-center justify-center space-x-4">
-                      <div className="text-center">
-                        <p className="text-2xl font-bold text-gray-900 dark:text-white">{bus.departureTime}</p>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">{fromCity}</p>
-                      </div>
-                      <div className="flex flex-col items-center">
-                        <Clock className="h-4 w-4 text-gray-400 mb-1" />
-                        <p className="text-sm text-gray-600 dark:text-gray-400">{bus.duration}</p>
-                      </div>
-                      <div className="text-center">
-                        <p className="text-2xl font-bold text-gray-900 dark:text-white">{bus.arrivalTime}</p>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">{toCity}</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Price & Book */}
-                  <div className="text-center lg:text-right">
-                    <div className="mb-4">
-                      <p className="text-3xl font-bold text-purple-600 dark:text-purple-400">{formatPrice(bus.price)} {bus.currency}</p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">per person</p>
-                    </div>
-                    <Button className="w-full lg:w-auto bg-purple-600 hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600">
-                      <CreditCard className="w-4 h-4 mr-2" />
-                      Book Now
-                    </Button>
                   </div>
                 </div>
               </CardContent>
