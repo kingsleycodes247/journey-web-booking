@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -16,6 +15,7 @@ import { Header } from "@/components/Header";
 import { WeatherSection } from "@/components/WeatherSection";
 import { FloatingChatButton } from "@/components/FloatingChatButton";
 import { useTheme } from "@/hooks/useTheme";
+import { Footer } from "@/components/Footer";
 
 const Index = () => {
   const [fromCity, setFromCity] = useState("");
@@ -269,6 +269,9 @@ const Index = () => {
 
       {/* Features Section */}
       {!showResults && <FeaturesSection />}
+
+      {/* Footer */}
+      <Footer />
 
       {/* Floating Chat Button */}
       <FloatingChatButton />
