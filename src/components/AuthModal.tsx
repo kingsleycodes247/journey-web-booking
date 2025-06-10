@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -71,8 +72,8 @@ export const AuthModal = ({ mode, onModeChange, onClose }: AuthModalProps) => {
         </DialogTitle>
         <DialogDescription className="text-center text-gray-600 dark:text-gray-400">
           {mode === 'login' 
-            ? 'Sign in to your account to continue your journey' 
-            : 'Create your account and start booking with ease'
+            ? t('auth.loginDescription')
+            : t('auth.signupDescription')
           }
         </DialogDescription>
       </DialogHeader>
@@ -82,12 +83,12 @@ export const AuthModal = ({ mode, onModeChange, onClose }: AuthModalProps) => {
           <div className="space-y-2">
             <Label htmlFor="name" className="flex items-center text-sm font-medium">
               <User className="w-4 h-4 mr-1" />
-              Full Name
+              {t('auth.fullName')}
             </Label>
             <Input
               id="name"
               type="text"
-              placeholder="Enter your full name"
+              placeholder={t('auth.enterName')}
               value={formData.name}
               onChange={(e) => handleInputChange('name', e.target.value)}
               className="h-11"
@@ -104,7 +105,7 @@ export const AuthModal = ({ mode, onModeChange, onClose }: AuthModalProps) => {
           <Input
             id="email"
             type="email"
-            placeholder="Enter your email"
+            placeholder={t('auth.enterEmail')}
             value={formData.email}
             onChange={(e) => handleInputChange('email', e.target.value)}
             className="h-11"
@@ -116,7 +117,7 @@ export const AuthModal = ({ mode, onModeChange, onClose }: AuthModalProps) => {
           <div className="space-y-2">
             <Label htmlFor="phone" className="flex items-center text-sm font-medium">
               <Phone className="w-4 h-4 mr-1" />
-              Phone Number
+              {t('auth.phoneNumber')}
             </Label>
             <Input
               id="phone"
@@ -139,7 +140,7 @@ export const AuthModal = ({ mode, onModeChange, onClose }: AuthModalProps) => {
             <Input
               id="password"
               type={showPassword ? "text" : "password"}
-              placeholder="Enter your password"
+              placeholder={t('auth.enterPassword')}
               value={formData.password}
               onChange={(e) => handleInputChange('password', e.target.value)}
               className="h-11 pr-10"
@@ -161,12 +162,12 @@ export const AuthModal = ({ mode, onModeChange, onClose }: AuthModalProps) => {
           <div className="space-y-2">
             <Label htmlFor="confirmPassword" className="flex items-center text-sm font-medium">
               <Lock className="w-4 h-4 mr-1" />
-              Confirm Password
+              {t('auth.confirmPassword')}
             </Label>
             <Input
               id="confirmPassword"
               type="password"
-              placeholder="Confirm your password"
+              placeholder={t('auth.confirmYourPassword')}
               value={formData.confirmPassword}
               onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
               className="h-11"
@@ -178,7 +179,7 @@ export const AuthModal = ({ mode, onModeChange, onClose }: AuthModalProps) => {
         {mode === 'login' && (
           <div className="text-right">
             <Button variant="link" className="text-sm text-purple-600 hover:text-purple-700 p-0">
-              Forgot password?
+              {t('auth.forgotPassword')}
             </Button>
           </div>
         )}
@@ -194,7 +195,7 @@ export const AuthModal = ({ mode, onModeChange, onClose }: AuthModalProps) => {
 
         <div className="text-center">
           <span className="text-sm text-gray-600 dark:text-gray-400">
-            {mode === 'login' ? "Don't have an account?" : "Already have an account?"}
+            {mode === 'login' ? t('auth.noAccount') : t('auth.haveAccount')}
           </span>
           <Button
             type="button"
@@ -202,7 +203,7 @@ export const AuthModal = ({ mode, onModeChange, onClose }: AuthModalProps) => {
             className="text-sm text-purple-600 hover:text-purple-700 ml-1 p-0 h-auto"
             onClick={() => onModeChange(mode === 'login' ? 'signup' : 'login')}
           >
-            {mode === 'login' ? 'Sign up' : 'Sign in'}
+            {mode === 'login' ? t('auth.signUp') : t('auth.signIn')}
           </Button>
         </div>
       </form>

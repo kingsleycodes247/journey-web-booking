@@ -83,7 +83,7 @@ const Index = () => {
                 <div className="flex justify-center">
                   <Select value={ticketType} onValueChange={setTicketType}>
                     <SelectTrigger className="w-full md:w-64 h-12 dark:bg-gray-700 dark:border-gray-600">
-                      <SelectValue placeholder="Select ticket type" />
+                      <SelectValue placeholder={t('form.selectTicketType')} />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="one-way">{t('form.oneWay')}</SelectItem>
@@ -102,7 +102,7 @@ const Index = () => {
                     </Label>
                     <Select value={fromCity} onValueChange={setFromCity}>
                       <SelectTrigger className="h-12 dark:bg-gray-700 dark:border-gray-600">
-                        <SelectValue placeholder="Select departure city" />
+                        <SelectValue placeholder={t('form.selectDeparture')} />
                       </SelectTrigger>
                       <SelectContent>
                         {cities.map((city) => (
@@ -132,7 +132,7 @@ const Index = () => {
                     </Label>
                     <Select value={toCity} onValueChange={setToCity}>
                       <SelectTrigger className="h-12 dark:bg-gray-700 dark:border-gray-600">
-                        <SelectValue placeholder="Select destination city" />
+                        <SelectValue placeholder={t('form.selectDestination')} />
                       </SelectTrigger>
                       <SelectContent>
                         {cities.map((city) => (
@@ -158,7 +158,7 @@ const Index = () => {
                           )}
                         >
                           <CalendarIcon className="mr-2 h-4 w-4" />
-                          {departureDate ? format(departureDate, "PPP") : "Pick a date"}
+                          {departureDate ? format(departureDate, "PPP") : t('form.pickDate')}
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0" align="start">
@@ -183,7 +183,7 @@ const Index = () => {
                       <SelectContent>
                         {[1, 2, 3, 4, 5, 6].map((num) => (
                           <SelectItem key={num} value={num.toString()}>
-                            {num} {num === 1 ? 'Passenger' : 'Passengers'}
+                            {num} {num === 1 ? t('form.passenger') : t('form.passengers')}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -210,7 +210,7 @@ const Index = () => {
                             )}
                           >
                             <CalendarIcon className="mr-2 h-4 w-4" />
-                            {returnDate ? format(returnDate, "PPP") : "Pick a date"}
+                            {returnDate ? format(returnDate, "PPP") : t('form.pickDate')}
                           </Button>
                         </PopoverTrigger>
                         <PopoverContent className="w-auto p-0" align="start">
@@ -237,7 +237,7 @@ const Index = () => {
                     className="border-2 border-purple-200 hover:border-purple-400 hover:bg-purple-50 dark:border-purple-600 dark:hover:border-purple-400 dark:hover:bg-purple-900/50 transition-all duration-200 hover:scale-105"
                   >
                     <ArrowRightLeft className="h-4 w-4 mr-2" />
-                    Swap Cities
+                    {t('form.swapCities')}
                   </Button>
                 </div>
 

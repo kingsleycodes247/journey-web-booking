@@ -1,3 +1,4 @@
+
 import { Bus, Moon, Sun, Menu, X, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -8,9 +9,11 @@ import { useState } from "react";
 import { AuthModal } from "@/components/AuthModal";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { ContactModal } from "@/components/ContactModal";
+import { useTranslation } from "@/contexts/TranslationContext";
 
 export const Header = () => {
   const { theme, toggleTheme } = useTheme();
+  const { t } = useTranslation();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
@@ -38,11 +41,11 @@ export const Header = () => {
   };
 
   const navItems = [
-    { label: "Home", href: "#", onClick: handleHomeClick },
-    { label: "My Bookings", href: "#", onClick: handleAuthRequiredClick },
-    { label: "Track Journey", href: "#", onClick: handleAuthRequiredClick },
-    { label: "Bus Partners", href: "#", onClick: handleBusPartnersClick },
-    { label: "Help", href: "#", onClick: handleHelpClick },
+    { label: t('nav.home'), href: "#", onClick: handleHomeClick },
+    { label: t('nav.bookings'), href: "#", onClick: handleAuthRequiredClick },
+    { label: t('nav.track'), href: "#", onClick: handleAuthRequiredClick },
+    { label: t('nav.partners'), href: "#", onClick: handleBusPartnersClick },
+    { label: t('nav.help'), href: "#", onClick: handleHelpClick },
   ];
 
   return (
@@ -102,7 +105,7 @@ export const Header = () => {
               onClick={() => handleAuthClick('login')}
             >
               <User className="h-4 w-4 mr-1" />
-              Sign In
+              {t('nav.signin')}
             </Button>
           </nav>
 
@@ -129,7 +132,7 @@ export const Header = () => {
                   
                   {/* Dark Mode Toggle Mobile */}
                   <div className="flex items-center justify-between py-4">
-                    <span className="text-gray-700 dark:text-gray-300">Dark Mode</span>
+                    <span className="text-gray-700 dark:text-gray-300">{t('common.darkMode')}</span>
                     <div className="flex items-center space-x-2">
                       <Sun className="h-4 w-4 text-gray-600 dark:text-gray-400" />
                       <Switch
@@ -147,7 +150,7 @@ export const Header = () => {
                     onClick={() => handleAuthClick('login')}
                   >
                     <User className="h-4 w-4 mr-1" />
-                    Sign In
+                    {t('nav.signin')}
                   </Button>
                 </div>
               </SheetContent>
