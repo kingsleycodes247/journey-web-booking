@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Calendar, MapPin, Clock, User, Settings, LogOut, CreditCard } from 'lucide-react';
+import { Calendar, MapPin, Clock, User, LogOut, CreditCard, Bus, Navigation, Phone, Mail } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTranslation } from '@/contexts/TranslationContext';
 import { Header } from '@/components/Header';
@@ -21,8 +21,22 @@ interface Booking {
   time: string;
   busCompany: string;
   seatNumber: string;
-  status: 'confirmed' | 'pending' | 'cancelled';
+  status: 'confirmed' | 'pending' | 'cancelled' | 'completed';
   amount: string;
+  driverName: string;
+  driverPhone: string;
+  busPlate: string;
+}
+
+interface LiveTracking {
+  id: string;
+  from: string;
+  to: string;
+  currentLocation: string;
+  progress: number;
+  estimatedArrival: string;
+  driverName: string;
+  busPlate: string;
 }
 
 export default function Dashboard() {
@@ -41,7 +55,10 @@ export default function Dashboard() {
       busCompany: 'Musango Express',
       seatNumber: '12A',
       status: 'confirmed',
-      amount: '3,500 XAF'
+      amount: '3,500 XAF',
+      driverName: 'Jean Pierre',
+      driverPhone: '+237 680 123 456',
+      busPlate: 'CM-234-YAO'
     },
     {
       id: '2',
@@ -52,7 +69,67 @@ export default function Dashboard() {
       busCompany: 'Guaranti Express',
       seatNumber: '8B',
       status: 'pending',
-      amount: '4,200 XAF'
+      amount: '4,200 XAF',
+      driverName: 'Paul Mbarga',
+      driverPhone: '+237 690 987 654',
+      busPlate: 'CM-567-BMD'
+    },
+    {
+      id: '3',
+      from: 'Douala',
+      to: 'Bafoussam',
+      date: '2024-06-10',
+      time: '16:00',
+      busCompany: 'Amour Mezam',
+      seatNumber: '15C',
+      status: 'completed',
+      amount: '2,800 XAF',
+      driverName: 'Emmanuel Fotso',
+      driverPhone: '+237 675 456 789',
+      busPlate: 'CM-890-DLA'
+    }
+  ];
+
+  const liveTracking: LiveTracking[] = [
+    {
+      id: '1',
+      from: 'Yaoundé',
+      to: 'Douala',
+      currentLocation: 'Edéa',
+      progress: 65,
+      estimatedArrival: '10:30 AM',
+      driverName: 'Jean Pierre',
+      busPlate: 'CM-234-YAO'
+    }
+  ];
+
+  const availableBuses = [
+    {
+      id: '1',
+      company: 'Musango Express',
+      from: 'Yaoundé',
+      to: 'Douala',
+      time: '06:00',
+      price: '3,500 XAF',
+      seatsAvailable: 12
+    },
+    {
+      id: '2',
+      company: 'Guaranti Express',
+      from: 'Yaoundé',
+      to: 'Bamenda',
+      time: '08:30',
+      price: '4,200 XAF',
+      seatsAvailable: 8
+    },
+    {
+      id: '3',
+      company: 'Amour Mezam',
+      from: 'Douala',
+      to: 'Bafoussam',
+      time: '14:00',
+      price: '2,800 XAF',
+      seatsAvailable: 15
     }
   ];
 
@@ -65,6 +142,16 @@ export default function Dashboard() {
     window.location.href = '/admin';
     return null;
   }
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'confirmed': return 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400';
+      case 'pending': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400';
+      case 'cancelled': return 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400';
+      case 'completed': return 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400';
+      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400';
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-indigo-50 dark:from-purple-900/20 dark:via-gray-900 dark:to-indigo-900/20">
@@ -86,6 +173,7 @@ export default function Dashboard() {
                   {t('dashboard.welcome')}, {user.name}!
                 </h1>
                 <p className="text-gray-600 dark:text-gray-300">{user.email}</p>
+                <p className="text-sm text-purple-600 dark:text-purple-400">📍 Current Location: Yaoundé, Cameroon</p>
               </div>
             </div>
             <Button
@@ -100,14 +188,18 @@ export default function Dashboard() {
 
           {/* Dashboard Tabs */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-            <TabsList className="grid w-full grid-cols-3 lg:grid-cols-4 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
+            <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
               <TabsTrigger value="bookings" className="flex items-center space-x-2">
                 <Calendar className="w-4 h-4" />
                 <span className="hidden sm:inline">{t('dashboard.bookings')}</span>
               </TabsTrigger>
               <TabsTrigger value="tracking" className="flex items-center space-x-2">
-                <MapPin className="w-4 h-4" />
-                <span className="hidden sm:inline">Tracking</span>
+                <Navigation className="w-4 h-4" />
+                <span className="hidden sm:inline">Live Tracking</span>
+              </TabsTrigger>
+              <TabsTrigger value="buses" className="flex items-center space-x-2">
+                <Bus className="w-4 h-4" />
+                <span className="hidden sm:inline">Available Buses</span>
               </TabsTrigger>
               <TabsTrigger value="profile" className="flex items-center space-x-2">
                 <User className="w-4 h-4" />
@@ -127,27 +219,46 @@ export default function Dashboard() {
                 <CardContent>
                   <div className="space-y-4">
                     {mockBookings.map((booking) => (
-                      <div key={booking.id} className="flex flex-col md:flex-row items-start md:items-center justify-between p-4 border rounded-lg bg-gray-50 dark:bg-gray-700/50">
-                        <div className="flex-1 space-y-2 md:space-y-0 md:flex md:items-center md:space-x-4">
-                          <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-300">
-                            <MapPin className="w-4 h-4" />
-                            <span>{booking.from} → {booking.to}</span>
+                      <div key={booking.id} className="border rounded-lg p-4 bg-gray-50 dark:bg-gray-700/50">
+                        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center space-y-3 lg:space-y-0">
+                          <div className="flex-1 space-y-2">
+                            <div className="flex items-center space-x-2">
+                              <MapPin className="w-4 h-4 text-purple-600" />
+                              <span className="font-semibold">{booking.from} → {booking.to}</span>
+                              <Badge className={getStatusColor(booking.status)}>
+                                {booking.status}
+                              </Badge>
+                            </div>
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm text-gray-600 dark:text-gray-300">
+                              <div className="flex items-center space-x-1">
+                                <Calendar className="w-3 h-3" />
+                                <span>{booking.date}</span>
+                              </div>
+                              <div className="flex items-center space-x-1">
+                                <Clock className="w-3 h-3" />
+                                <span>{booking.time}</span>
+                              </div>
+                              <div className="flex items-center space-x-1">
+                                <Bus className="w-3 h-3" />
+                                <span>{booking.busCompany}</span>
+                              </div>
+                              <div className="flex items-center space-x-1">
+                                <User className="w-3 h-3" />
+                                <span>Seat {booking.seatNumber}</span>
+                              </div>
+                            </div>
+                            <div className="text-xs text-gray-500 dark:text-gray-400">
+                              Driver: {booking.driverName} | Plate: {booking.busPlate} | Phone: {booking.driverPhone}
+                            </div>
                           </div>
-                          <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-300">
-                            <Calendar className="w-4 h-4" />
-                            <span>{booking.date}</span>
+                          <div className="text-right">
+                            <p className="font-bold text-lg">{booking.amount}</p>
+                            {booking.status === 'confirmed' && (
+                              <Button size="sm" className="mt-2 bg-green-600 hover:bg-green-700">
+                                Download Ticket
+                              </Button>
+                            )}
                           </div>
-                          <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-300">
-                            <Clock className="w-4 h-4" />
-                            <span>{booking.time}</span>
-                          </div>
-                          <Badge variant={booking.status === 'confirmed' ? 'default' : booking.status === 'pending' ? 'secondary' : 'destructive'}>
-                            {booking.status}
-                          </Badge>
-                        </div>
-                        <div className="mt-2 md:mt-0 text-right">
-                          <p className="font-semibold">{booking.amount}</p>
-                          <p className="text-sm text-gray-500">{booking.busCompany}</p>
                         </div>
                       </div>
                     ))}
@@ -156,15 +267,90 @@ export default function Dashboard() {
               </Card>
             </TabsContent>
 
-            <TabsContent value="tracking">
+            <TabsContent value="tracking" className="space-y-6">
               <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
                 <CardHeader>
                   <CardTitle>Live Journey Tracking</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-center py-8">
-                    <MapPin className="w-16 h-16 mx-auto text-gray-400 mb-4" />
-                    <p className="text-gray-600 dark:text-gray-300">No active journeys to track</p>
+                  {liveTracking.length > 0 ? (
+                    <div className="space-y-4">
+                      {liveTracking.map((trip) => (
+                        <div key={trip.id} className="border rounded-lg p-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20">
+                          <div className="flex items-center justify-between mb-4">
+                            <h3 className="font-semibold text-lg">{trip.from} → {trip.to}</h3>
+                            <Badge className="bg-green-100 text-green-800">Live</Badge>
+                          </div>
+                          <div className="space-y-3">
+                            <div className="flex items-center space-x-2">
+                              <MapPin className="w-4 h-4 text-blue-600" />
+                              <span>Current Location: <strong>{trip.currentLocation}</strong></span>
+                            </div>
+                            <div className="w-full bg-gray-200 rounded-full h-2">
+                              <div 
+                                className="bg-gradient-to-r from-blue-600 to-purple-600 h-2 rounded-full transition-all duration-300" 
+                                style={{ width: `${trip.progress}%` }}
+                              ></div>
+                            </div>
+                            <div className="flex justify-between text-sm text-gray-600 dark:text-gray-300">
+                              <span>Progress: {trip.progress}%</span>
+                              <span>ETA: {trip.estimatedArrival}</span>
+                            </div>
+                            <div className="flex items-center justify-between pt-2 border-t">
+                              <div className="text-sm">
+                                <p>Driver: {trip.driverName}</p>
+                                <p>Bus: {trip.busPlate}</p>
+                              </div>
+                              <Button size="sm" variant="outline">
+                                <Phone className="w-4 h-4 mr-1" />
+                                Call Driver
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-8">
+                      <Navigation className="w-16 h-16 mx-auto text-gray-400 mb-4" />
+                      <p className="text-gray-600 dark:text-gray-300">No active journeys to track</p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="buses" className="space-y-6">
+              <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle>Available Buses Today</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                    {availableBuses.map((bus) => (
+                      <div key={bus.id} className="border rounded-lg p-4 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-700">
+                        <div className="flex items-center justify-between mb-3">
+                          <h3 className="font-semibold">{bus.company}</h3>
+                          <Badge variant="outline">{bus.seatsAvailable} seats</Badge>
+                        </div>
+                        <div className="space-y-2 text-sm">
+                          <div className="flex items-center space-x-2">
+                            <MapPin className="w-4 h-4 text-purple-600" />
+                            <span>{bus.from} → {bus.to}</span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <Clock className="w-4 h-4 text-blue-600" />
+                            <span>Departure: {bus.time}</span>
+                          </div>
+                          <div className="flex items-center justify-between pt-2">
+                            <span className="font-bold text-lg text-green-600">{bus.price}</span>
+                            <Button size="sm" className="bg-purple-600 hover:bg-purple-700">
+                              Book Now
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </CardContent>
               </Card>
@@ -187,6 +373,16 @@ export default function Dashboard() {
                     >
                       Add Payment Method
                     </Button>
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="border rounded-lg p-4 bg-gradient-to-r from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20">
+                        <h3 className="font-semibold mb-2">Orange Money</h3>
+                        <p className="text-sm text-gray-600 dark:text-gray-300">Fast and secure mobile payments</p>
+                      </div>
+                      <div className="border rounded-lg p-4 bg-gradient-to-r from-yellow-50 to-yellow-100 dark:from-yellow-900/20 dark:to-yellow-800/20">
+                        <h3 className="font-semibold mb-2">MTN Mobile Money</h3>
+                        <p className="text-sm text-gray-600 dark:text-gray-300">Reliable mobile payment solution</p>
+                      </div>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
