@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -14,8 +15,8 @@ import { FeaturesSection } from "@/components/FeaturesSection";
 import { Header } from "@/components/Header";
 import { WeatherSection } from "@/components/WeatherSection";
 import { FloatingChatButton } from "@/components/FloatingChatButton";
-import { useTheme } from "@/hooks/useTheme";
 import { Footer } from "@/components/Footer";
+import { useTranslation } from "@/contexts/TranslationContext";
 
 const Index = () => {
   const [fromCity, setFromCity] = useState("");
@@ -25,6 +26,7 @@ const Index = () => {
   const [passengers, setPassengers] = useState("1");
   const [ticketType, setTicketType] = useState("one-way");
   const [showResults, setShowResults] = useState(false);
+  const { t } = useTranslation();
 
   // Cameroon cities
   const cities = [
@@ -61,19 +63,19 @@ const Index = () => {
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-8 md:mb-12">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-4 md:mb-6">
-              Book Your
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-purple-400 dark:to-indigo-400"> Journey</span>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-4 md:mb-6 animate-fade-in">
+              {t('hero.title1')}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-purple-400 dark:to-indigo-400"> {t('hero.title2')}</span>
             </h1>
-            <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto px-4">
-              Travel comfortably across Cameroon with our trusted bus partners. Book tickets from any bus company, all in one place.
+            <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto px-4 animate-slide-in-from-bottom">
+              {t('hero.subtitle')}
             </p>
           </div>
 
           {/* Search Form */}
-          <Card className="max-w-6xl mx-auto shadow-2xl border-0 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm">
+          <Card className="max-w-6xl mx-auto shadow-2xl border-0 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm animate-scale-in">
             <CardHeader className="pb-4">
-              <CardTitle className="text-center text-xl md:text-2xl text-gray-800 dark:text-white">Find Your Perfect Trip</CardTitle>
+              <CardTitle className="text-center text-xl md:text-2xl text-gray-800 dark:text-white">{t('form.title')}</CardTitle>
             </CardHeader>
             <CardContent className="p-4 md:p-8">
               <div className="space-y-6">
@@ -84,8 +86,8 @@ const Index = () => {
                       <SelectValue placeholder="Select ticket type" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="one-way">One Way</SelectItem>
-                      <SelectItem value="round-trip">Round Trip</SelectItem>
+                      <SelectItem value="one-way">{t('form.oneWay')}</SelectItem>
+                      <SelectItem value="round-trip">{t('form.roundTrip')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -96,7 +98,7 @@ const Index = () => {
                   <div className="space-y-2">
                     <Label htmlFor="from" className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center">
                       <MapPin className="w-4 h-4 mr-1" />
-                      From
+                      {t('form.from')}
                     </Label>
                     <Select value={fromCity} onValueChange={setFromCity}>
                       <SelectTrigger className="h-12 dark:bg-gray-700 dark:border-gray-600">
@@ -116,7 +118,7 @@ const Index = () => {
                       variant="outline"
                       size="icon"
                       onClick={swapCities}
-                      className="h-12 w-12 rounded-full border-2 border-purple-200 hover:border-purple-400 hover:bg-purple-50 dark:border-purple-600 dark:hover:border-purple-400 dark:hover:bg-purple-900/50"
+                      className="h-12 w-12 rounded-full border-2 border-purple-200 hover:border-purple-400 hover:bg-purple-50 dark:border-purple-600 dark:hover:border-purple-400 dark:hover:bg-purple-900/50 transition-all duration-200 hover:scale-110"
                     >
                       <ArrowRightLeft className="h-4 w-4" />
                     </Button>
@@ -126,7 +128,7 @@ const Index = () => {
                   <div className="space-y-2">
                     <Label htmlFor="to" className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center">
                       <MapPin className="w-4 h-4 mr-1" />
-                      To
+                      {t('form.to')}
                     </Label>
                     <Select value={toCity} onValueChange={setToCity}>
                       <SelectTrigger className="h-12 dark:bg-gray-700 dark:border-gray-600">
@@ -144,7 +146,7 @@ const Index = () => {
                   <div className="space-y-2">
                     <Label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center">
                       <CalendarIcon className="w-4 h-4 mr-1" />
-                      Departure Date
+                      {t('form.departure')}
                     </Label>
                     <Popover>
                       <PopoverTrigger asChild>
@@ -173,7 +175,7 @@ const Index = () => {
 
                   {/* Passengers */}
                   <div className="space-y-2">
-                    <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">Passengers</Label>
+                    <Label className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('form.passengers')}</Label>
                     <Select value={passengers} onValueChange={setPassengers}>
                       <SelectTrigger className="h-12 dark:bg-gray-700 dark:border-gray-600">
                         <SelectValue />
@@ -191,12 +193,12 @@ const Index = () => {
 
                 {/* Return Date for Round Trip */}
                 {ticketType === "round-trip" && (
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 animate-slide-in-from-top">
                     <div></div>
                     <div className="space-y-2">
                       <Label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center">
                         <CalendarIcon className="w-4 h-4 mr-1" />
-                        Return Date
+                        {t('form.return')}
                       </Label>
                       <Popover>
                         <PopoverTrigger asChild>
@@ -232,7 +234,7 @@ const Index = () => {
                     variant="outline"
                     size="sm"
                     onClick={swapCities}
-                    className="border-2 border-purple-200 hover:border-purple-400 hover:bg-purple-50 dark:border-purple-600 dark:hover:border-purple-400 dark:hover:bg-purple-900/50"
+                    className="border-2 border-purple-200 hover:border-purple-400 hover:bg-purple-50 dark:border-purple-600 dark:hover:border-purple-400 dark:hover:bg-purple-900/50 transition-all duration-200 hover:scale-105"
                   >
                     <ArrowRightLeft className="h-4 w-4 mr-2" />
                     Swap Cities
@@ -241,10 +243,10 @@ const Index = () => {
 
                 <Button 
                   onClick={handleSearch}
-                  className="w-full mt-6 md:mt-8 h-12 md:h-14 text-base md:text-lg bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 dark:from-purple-500 dark:to-indigo-500 dark:hover:from-purple-600 dark:hover:to-indigo-600"
+                  className="w-full mt-6 md:mt-8 h-12 md:h-14 text-base md:text-lg bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 dark:from-purple-500 dark:to-indigo-500 dark:hover:from-purple-600 dark:hover:to-indigo-600 transition-all duration-200 hover:scale-105 animate-glow"
                   disabled={!fromCity || !toCity || !departureDate || (ticketType === "round-trip" && !returnDate)}
                 >
-                  Search Buses
+                  {t('form.search')}
                 </Button>
               </div>
             </CardContent>

@@ -1,14 +1,14 @@
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { useTranslation } from "@/contexts/TranslationContext";
 
 export const LanguageSwitcher = () => {
-  const [currentLanguage, setCurrentLanguage] = useState<'en' | 'fr'>('en');
+  const { language, setLanguage } = useTranslation();
 
   const languages = [
     { 
-      code: 'en', 
+      code: 'en' as const, 
       name: 'English', 
       flag: (
         <svg className="w-5 h-4" viewBox="0 0 640 480">
@@ -21,7 +21,7 @@ export const LanguageSwitcher = () => {
       )
     },
     { 
-      code: 'fr', 
+      code: 'fr' as const, 
       name: 'Français', 
       flag: (
         <svg className="w-5 h-4" viewBox="0 0 640 480">
@@ -33,11 +33,10 @@ export const LanguageSwitcher = () => {
     }
   ];
 
-  const currentLang = languages.find(lang => lang.code === currentLanguage);
+  const currentLang = languages.find(lang => lang.code === language);
 
   const handleLanguageChange = (langCode: 'en' | 'fr') => {
-    setCurrentLanguage(langCode);
-    // Here you would implement actual language switching logic
+    setLanguage(langCode);
     console.log('Language changed to:', langCode);
   };
 
@@ -55,20 +54,20 @@ export const LanguageSwitcher = () => {
       </PopoverTrigger>
       <PopoverContent className="w-40 p-1" align="end">
         <div className="space-y-1">
-          {languages.map((language) => (
+          {languages.map((lang) => (
             <Button
-              key={language.code}
+              key={lang.code}
               variant="ghost"
               size="sm"
               className={`w-full justify-start gap-2 h-8 ${
-                currentLanguage === language.code 
+                language === lang.code 
                   ? 'bg-purple-100 dark:bg-purple-900/50' 
                   : 'hover:bg-gray-100 dark:hover:bg-gray-800'
               }`}
-              onClick={() => handleLanguageChange(language.code as 'en' | 'fr')}
+              onClick={() => handleLanguageChange(lang.code)}
             >
-              {language.flag}
-              <span className="text-sm">{language.name}</span>
+              {lang.flag}
+              <span className="text-sm">{lang.name}</span>
             </Button>
           ))}
         </div>

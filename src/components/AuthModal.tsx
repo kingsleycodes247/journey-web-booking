@@ -6,13 +6,17 @@ import { Label } from "@/components/ui/label";
 import { DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { Eye, EyeOff, Mail, Lock, User, Phone } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useTranslation } from "@/contexts/TranslationContext";
+import { useToast } from "@/hooks/use-toast";
 
 interface AuthModalProps {
   mode: 'login' | 'signup';
   onModeChange: (mode: 'login' | 'signup') => void;
+  onClose: () => void;
 }
 
-export const AuthModal = ({ mode, onModeChange }: AuthModalProps) => {
+export const AuthModal = ({ mode, onModeChange, onClose }: AuthModalProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -21,22 +25,50 @@ export const AuthModal = ({ mode, onModeChange }: AuthModalProps) => {
     password: '',
     confirmPassword: ''
   });
+  const { login } = useAuth();
+  const { t } = useTranslation();
+  const { toast } = useToast();
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle authentication logic here
-    console.log('Auth form submitted:', { mode, formData });
+    
+    if (mode === 'login') {
+      const success = await login(formData.email, formData.password);
+      if (success) {
+        toast({
+          title: "Login Successful",
+          description: "Welcome back to 237 Voyage!",
+        });
+        onClose();
+        // Redirect based on user type
+        const isAdmin = formData.email === 'admin';
+        window.location.href = isAdmin ? '/admin' : '/dashboard';
+      } else {
+        toast({
+          title: "Login Failed",
+          description: "Invalid credentials. Please try again.",
+          variant: "destructive"
+        });
+      }
+    } else {
+      // Handle signup logic here
+      toast({
+        title: "Account Created",
+        description: "Your account has been created successfully!",
+      });
+      onClose();
+    }
   };
 
   return (
     <div className="animate-fade-in">
       <DialogHeader>
         <DialogTitle className="text-2xl font-bold text-center bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
-          {mode === 'login' ? 'Welcome Back!' : 'Join 237 Voyage'}
+          {mode === 'login' ? t('auth.login') : t('auth.signup')}
         </DialogTitle>
         <DialogDescription className="text-center text-gray-600 dark:text-gray-400">
           {mode === 'login' 
@@ -68,7 +100,7 @@ export const AuthModal = ({ mode, onModeChange }: AuthModalProps) => {
         <div className="space-y-2">
           <Label htmlFor="email" className="flex items-center text-sm font-medium">
             <Mail className="w-4 h-4 mr-1" />
-            Email Address
+            {t('auth.email')}
           </Label>
           <Input
             id="email"
@@ -102,7 +134,7 @@ export const AuthModal = ({ mode, onModeChange }: AuthModalProps) => {
         <div className="space-y-2">
           <Label htmlFor="password" className="flex items-center text-sm font-medium">
             <Lock className="w-4 h-4 mr-1" />
-            Password
+            {t('auth.password')}
           </Label>
           <div className="relative">
             <Input
@@ -156,7 +188,7 @@ export const AuthModal = ({ mode, onModeChange }: AuthModalProps) => {
           type="submit" 
           className="w-full h-11 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 transition-all duration-200 hover:scale-105"
         >
-          {mode === 'login' ? 'Sign In' : 'Create Account'}
+          {mode === 'login' ? t('auth.signin') : t('auth.signup_btn')}
         </Button>
 
         <Separator className="my-4" />
