@@ -1,4 +1,3 @@
-
 import { Bus, Phone, Facebook, Instagram } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -180,7 +179,11 @@ export const Footer = () => {
       {/* Auth Modal */}
       <Dialog open={isAuthModalOpen} onOpenChange={setIsAuthModalOpen}>
         <DialogContent className="max-w-md">
-          <AuthModal mode={authMode} onModeChange={setAuthMode} />
+          <AuthModal 
+            mode={authMode} 
+            onModeChange={setAuthMode} 
+            onClose={() => setIsAuthModalOpen(false)}
+          />
         </DialogContent>
       </Dialog>
 

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,7 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 interface AuthModalProps {
   mode: 'login' | 'signup';
   onModeChange: (mode: 'login' | 'signup') => void;
-  onClose: () => void;
+  onClose?: () => void;
 }
 
 export const AuthModal = ({ mode, onModeChange, onClose }: AuthModalProps) => {
@@ -43,7 +42,7 @@ export const AuthModal = ({ mode, onModeChange, onClose }: AuthModalProps) => {
           title: "Login Successful",
           description: "Welcome back to 237 Voyage!",
         });
-        onClose();
+        onClose?.();
         // Redirect based on user type
         const isAdmin = formData.email === 'admin';
         window.location.href = isAdmin ? '/admin' : '/dashboard';
@@ -60,7 +59,7 @@ export const AuthModal = ({ mode, onModeChange, onClose }: AuthModalProps) => {
         title: "Account Created",
         description: "Your account has been created successfully!",
       });
-      onClose();
+      onClose?.();
     }
   };
 

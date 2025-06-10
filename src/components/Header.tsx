@@ -1,4 +1,3 @@
-
 import { Bus, Moon, Sun, Menu, X, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -160,7 +159,11 @@ export const Header = () => {
       {/* Auth Modal */}
       <Dialog open={isAuthModalOpen} onOpenChange={setIsAuthModalOpen}>
         <DialogContent className="max-w-md">
-          <AuthModal mode={authMode} onModeChange={setAuthMode} />
+          <AuthModal 
+            mode={authMode} 
+            onModeChange={setAuthMode} 
+            onClose={() => setIsAuthModalOpen(false)}
+          />
         </DialogContent>
       </Dialog>
 
