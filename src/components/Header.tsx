@@ -8,10 +8,12 @@ import { useTheme } from "@/hooks/useTheme";
 import { useState } from "react";
 import { AuthModal } from "@/components/AuthModal";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { ContactModal } from "@/components/ContactModal";
 
 export const Header = () => {
   const { theme, toggleTheme } = useTheme();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
 
   const handleAuthClick = (mode: 'login' | 'signup') => {
@@ -19,19 +21,36 @@ export const Header = () => {
     setIsAuthModalOpen(true);
   };
 
+  const handleHomeClick = () => {
+    window.location.href = '/';
+  };
+
+  const handleAuthRequiredClick = () => {
+    setAuthMode('login');
+    setIsAuthModalOpen(true);
+  };
+
+  const handleBusPartnersClick = () => {
+    window.location.href = '/bus-partners';
+  };
+
+  const handleHelpClick = () => {
+    setIsContactModalOpen(true);
+  };
+
   const navItems = [
-    { label: "Home", href: "#" },
-    { label: "My Bookings", href: "#" },
-    { label: "Track Journey", href: "#" },
-    { label: "Bus Partners", href: "#" },
-    { label: "Help", href: "#" },
+    { label: "Home", href: "#", onClick: handleHomeClick },
+    { label: "My Bookings", href: "#", onClick: handleAuthRequiredClick },
+    { label: "Track Journey", href: "#", onClick: handleAuthRequiredClick },
+    { label: "Bus Partners", href: "#", onClick: handleBusPartnersClick },
+    { label: "Help", href: "#", onClick: handleHelpClick },
   ];
 
   return (
     <header className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50 transition-colors duration-300">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 cursor-pointer" onClick={handleHomeClick}>
             {/* Enhanced Logo with Cameroon Map + Bus */}
             <div className="relative">
               <div className="h-10 w-10 bg-gradient-to-br from-purple-600 to-indigo-600 dark:from-purple-400 dark:to-indigo-400 rounded-lg flex items-center justify-center shadow-lg">
@@ -54,13 +73,13 @@ export const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
-              <a 
+              <button 
                 key={item.label}
-                href={item.href} 
+                onClick={item.onClick}
                 className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors duration-200 hover:scale-105"
               >
                 {item.label}
-              </a>
+              </button>
             ))}
             
             {/* Language Switcher */}
@@ -100,13 +119,13 @@ export const Header = () => {
               <SheetContent side="right" className="bg-white dark:bg-gray-900">
                 <div className="flex flex-col space-y-6 mt-8">
                   {navItems.map((item) => (
-                    <a 
+                    <button 
                       key={item.label}
-                      href={item.href} 
-                      className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors text-lg"
+                      onClick={item.onClick}
+                      className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors text-lg text-left"
                     >
                       {item.label}
-                    </a>
+                    </button>
                   ))}
                   
                   {/* Dark Mode Toggle Mobile */}
@@ -142,6 +161,13 @@ export const Header = () => {
       <Dialog open={isAuthModalOpen} onOpenChange={setIsAuthModalOpen}>
         <DialogContent className="max-w-md">
           <AuthModal mode={authMode} onModeChange={setAuthMode} />
+        </DialogContent>
+      </Dialog>
+
+      {/* Contact Modal */}
+      <Dialog open={isContactModalOpen} onOpenChange={setIsContactModalOpen}>
+        <DialogContent className="max-w-md">
+          <ContactModal />
         </DialogContent>
       </Dialog>
     </header>

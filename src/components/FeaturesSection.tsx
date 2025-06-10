@@ -1,123 +1,107 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Bus, Shield, Clock, MapPin, Users, Smartphone } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Shield, Clock, MapPin, Users, Star, Headphones } from "lucide-react";
 
 export const FeaturesSection = () => {
   const features = [
     {
-      icon: Bus,
-      title: "Multiple Bus Companies",
-      description: "Choose from various trusted bus operators across Cameroon",
-      image: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
-    },
-    {
       icon: Shield,
-      title: "Secure Booking",
-      description: "Your payments and personal information are always protected",
-      image: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+      title: "Safe & Secure",
+      description: "All our partner buses are verified and meet safety standards. Your security is our priority."
     },
     {
       icon: Clock,
-      title: "Real-time Updates",
-      description: "Get live updates on your journey status and arrival times",
-      image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+      title: "Real-time Tracking",
+      description: "Track your bus in real-time and share your location with family for peace of mind."
     },
     {
       icon: MapPin,
-      title: "Live Location Tracking",
-      description: "Share your live location with family during your journey",
-      image: "https://images.unsplash.com/photo-1466442929976-97f336a657be?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+      title: "Nationwide Coverage",
+      description: "Travel to over 50 cities across Cameroon with our extensive network of bus partners."
     },
     {
       icon: Users,
-      title: "Group Bookings",
-      description: "Easy booking for families and groups with special discounts",
-      image: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+      title: "Trusted Partners",
+      description: "We work with the most reliable bus companies in Cameroon for your comfort and safety."
     },
     {
-      icon: Smartphone,
-      title: "Mobile Friendly",
-      description: "Book tickets easily from any device, anywhere, anytime",
-      image: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+      icon: Star,
+      title: "Rated Service",
+      description: "Highly rated by thousands of travelers for our excellent service and reliability."
+    },
+    {
+      icon: Headphones,
+      title: "24/7 Support",
+      description: "Round-the-clock customer support to assist you throughout your journey."
     }
   ];
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const goToAbout = () => {
+    window.location.href = '/about';
+  };
+
   return (
-    <section className="py-12 md:py-20 bg-white dark:bg-gray-900 transition-colors duration-300">
+    <section className="py-16 md:py-20 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12 md:mb-16">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4 md:mb-6">
-            Why Choose 237 Voyage?
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4 md:mb-6">
+            Why Choose 
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-purple-400 dark:to-indigo-400"> 237 Voyage?</span>
           </h2>
-          <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            Experience the most convenient way to travel across Cameroon with our comprehensive bus booking platform
+          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            Experience the best in bus travel with our comprehensive platform designed for your comfort and convenience.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {features.map((feature, index) => {
-            const IconComponent = feature.icon;
-            return (
-              <Card 
-                key={index} 
-                className="group overflow-hidden bg-white dark:bg-gray-800 border-0 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 animate-fade-in"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                {/* Feature Image */}
-                <div className="relative h-48 overflow-hidden">
-                  <img 
-                    src={feature.image} 
-                    alt={feature.title}
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                  <div className="absolute bottom-4 left-4">
-                    <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
-                      <IconComponent className="h-6 w-6 text-white" />
-                    </div>
-                  </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12 md:mb-16">
+          {features.map((feature, index) => (
+            <Card key={index} className="hover:shadow-xl transition-all duration-300 hover:scale-105 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm group">
+              <CardHeader className="text-center pb-4">
+                <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-indigo-600 dark:from-purple-400 dark:to-indigo-400 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <feature.icon className="w-8 h-8 text-white" />
                 </div>
-
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-lg md:text-xl font-bold text-gray-900 dark:text-white">
-                    {feature.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                    {feature.description}
-                  </p>
-                </CardContent>
-              </Card>
-            );
-          })}
+                <CardTitle className="text-xl font-semibold text-gray-900 dark:text-white">
+                  {feature.title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="text-center">
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                  {feature.description}
+                </p>
+              </CardContent>
+            </Card>
+          ))}
         </div>
 
-        {/* Call to Action Section */}
-        <div className="mt-16 md:mt-20 text-center">
-          <div 
-            className="relative py-16 md:py-20 px-6 md:px-12 rounded-3xl overflow-hidden"
-            style={{
-              backgroundImage: `url('https://images.unsplash.com/photo-1500375592092-40eb2168fd21?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')`
-            }}
-          >
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-600/90 to-indigo-600/90 dark:from-purple-400/80 dark:to-indigo-400/80"></div>
-            <div className="relative z-10">
-              <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4 md:mb-6">
-                Ready to Start Your Journey?
-              </h3>
-              <p className="text-lg md:text-xl text-white/90 mb-6 md:mb-8 max-w-2xl mx-auto">
-                Join thousands of satisfied travelers who trust 237 Voyage for their bus travel needs across Cameroon
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <button className="bg-white text-purple-600 px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold hover:bg-gray-100 transition-colors duration-300">
-                  Book Your First Trip
-                </button>
-                <button className="border-2 border-white text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold hover:bg-white hover:text-purple-600 transition-colors duration-300">
-                  Learn More
-                </button>
-              </div>
-            </div>
+        {/* Call to Action */}
+        <div className="text-center bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-purple-500 dark:to-indigo-500 rounded-2xl p-8 md:p-12 text-white">
+          <h3 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6">
+            Ready to Start Your Journey?
+          </h3>
+          <p className="text-lg md:text-xl mb-6 md:mb-8 opacity-90 max-w-2xl mx-auto">
+            Join thousands of satisfied travelers who trust 237 Voyage for safe, comfortable, and reliable transportation across Cameroon.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button 
+              size="lg" 
+              onClick={scrollToTop}
+              className="bg-white text-purple-600 hover:bg-gray-100 dark:bg-gray-100 dark:text-purple-600 dark:hover:bg-gray-200 font-semibold px-8 py-3 text-lg transition-all duration-200 hover:scale-105"
+            >
+              Book Your First Trip
+            </Button>
+            <Button 
+              size="lg" 
+              variant="outline" 
+              onClick={goToAbout}
+              className="border-2 border-white text-white hover:bg-white hover:text-purple-600 dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-purple-600 font-semibold px-8 py-3 text-lg transition-all duration-200 hover:scale-105"
+            >
+              Learn More About Us
+            </Button>
           </div>
         </div>
       </div>
