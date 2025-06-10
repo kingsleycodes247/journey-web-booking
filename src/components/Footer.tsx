@@ -122,7 +122,7 @@ export const Footer = () => {
             </div>
             
             <p className="text-gray-400 text-center md:text-right">
-              © 2024 237 Voyage. All rights reserved. | Made with ❤️ in Cameroon
+              © 2024 237 Voyage. All rights reserved.
             </p>
           </div>
         </div>

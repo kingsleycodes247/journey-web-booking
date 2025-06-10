@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Bus, Clock, MapPin, Users, Wifi, AirVent, Shield } from "lucide-react";
+import { Bus, Clock, MapPin, Users, Wifi, AirVent, Shield, Currency } from "lucide-react";
 
 interface SearchResultsProps {
   fromCity: string;
@@ -24,6 +24,7 @@ export const SearchResults = ({ fromCity, toCity, departureDate, returnDate, pas
       duration: "8h 00m",
       price: 8500,
       rating: 4.5,
+      Currency: "XAF",
       amenities: ["WiFi", "AC", "Insurance"],
       busType: "VIP",
       seatsAvailable: 12,
@@ -31,8 +32,8 @@ export const SearchResults = ({ fromCity, toCity, departureDate, returnDate, pas
     },
     {
       id: 2,
-      operator: "Musango Omnisport",
-      companyLogo: "MO",
+      company: "Musango Omnisport",
+      logo: "🚌",
       departureTime: "09:15",
       arrivalTime: "17:45",
       duration: "8h 30m",
@@ -41,13 +42,15 @@ export const SearchResults = ({ fromCity, toCity, departureDate, returnDate, pas
       busType: "First Class",
       seatsAvailable: 8,
       rating: 4.2,
+      image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
       amenities: ["AC", "Comfortable Seats", "Music"],
+    
       trackingAvailable: true
     },
     {
       id: 3,
-      operator: "Binam Voyage",
-      companyLogo: "BV",
+      company: "Binam Voyage",
+      logo: "🚌",
       departureTime: "22:30",
       arrivalTime: "06:45",
       duration: "8h 15m",
@@ -56,6 +59,7 @@ export const SearchResults = ({ fromCity, toCity, departureDate, returnDate, pas
       busType: "Luxury VIP",
       seatsAvailable: 5,
       rating: 4.8,
+      image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
       amenities: ["WiFi", "Meals", "Premium Seats", "Entertainment", "Blankets"],
       trackingAvailable: true
     }
@@ -179,9 +183,9 @@ export const SearchResults = ({ fromCity, toCity, departureDate, returnDate, pas
                       <div className="text-center lg:text-right space-y-3">
                         <div>
                           <div className="text-2xl md:text-3xl font-bold text-purple-600 dark:text-purple-400">
-                            ₦{bus.price.toLocaleString()}
+                            XAF. {bus.price.toLocaleString()}
                             {ticketType === "round-trip" && (
-                              <span className="text-sm text-gray-500 block">× 2 = ₦{(bus.price * 2).toLocaleString()}</span>
+                              <span className="text-sm text-gray-500 block">× 2 = XAF. {(bus.price * 2).toLocaleString()}</span>
                             )}
                           </div>
                           <div className="text-sm text-gray-500">per person</div>
